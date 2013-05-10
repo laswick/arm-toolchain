@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# build_toolchain
+#
+# Rob Laswick
+# May 2 2013
+#
+# Top level "master" build script to build and install a gcc toolchain.
+
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+
+PREFIX=/home/rlaswick/opt/arm-toolchain
+
+BINUTILS_VER=2.23.2
+GCC_VER=4.8.0
+NEWLIB_VER=2.0.0
+GDB_VER=7.6
+
+./00_download ${WORKING_DIR} ${BINUTILS_VER} ${GCC_VER} ${NEWLIB_VER} \
+              ${GDB_VER} || exit 1
+./01_setup    ${WORKING_DIR} ${BINUTILS_VER} ${GCC_VER} ${NEWLIB_VER} \
+              ${GDB_VER} || exit 1
+./02_binutils ${WORKING_DIR} ${PREFIX} || exit 1
+./03_gcc_pre  ${WORKING_DIR} ${PREFIX} || exit 1
+./04_newlib   ${WORKING_DIR} ${PREFIX} || exit 1
+./05_gcc_post ${WORKING_DIR} ${PREFIX} || exit 1
+./06_gdb      ${WORKING_DIR} ${PREFIX} || exit 1
+./07_openocd  ${WORKING_DIR} ${PREFIX} || exit 1
+
+echo
+echo
+echo
+echo Toolchain built and installed successfully!
+echo `date`
+echo
+echo

@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# 01_setup
+#
+# Rob Laswick
+# May 2 2013
+#
+# Script to prepare the previously downloaded files to be built.
+
+if [ $# -ne 5 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+BINUTILS_VER=2.23.2
+GCC_VER=4.8.0
+NEWLIB_VER=2.0.0
+GDB_VER=7.6
+else
+WORKING_DIR=$1
+BINUTILS_VER=$2
+GCC_VER=$3
+NEWLIB_VER=$4
+GDB_VER=$5
+fi
+
+SCRIPTS_DIR=`pwd`
+
+cd ${WORKING_DIR}/src
+
+cp binutils-${BINUTILS_VER}.tar.bz2 ../build
+cp gcc-${GCC_VER}.tar.bz2 ../build
+cp newlib-${NEWLIB_VER}.tar.gz ../build
+cp gdb-${GDB_VER}.tar.bz2 ../build
+
+cd ../build
+
+tar xvfj binutils-${BINUTILS_VER}.tar.bz2 || exit 1
+ln -fs binutils-${BINUTILS_VER} binutils || exit 1
+rm -f binutils-${BINUTILS_VER}.tar.bz2
+
+tar xvfj gcc-${GCC_VER}.tar.bz2 || exit 1
+ln -fs gcc-${GCC_VER} gcc || exit 1
+rm -f gcc-${GCC_VER}.tar.bz2
+patch -b ${WORKING_DIR}/build/gcc/gcc/config/arm/t-arm-elf ${SCRIPTS_DIR}/gcc.patch || exit 1
+
+tar xvfz newlib-${NEWLIB_VER}.tar.gz || exit 1
+ln -fs newlib-${NEWLIB_VER} newlib || exit 1
+rm -f newlib-${NEWLIB_VER}.tar.gz
+
+tar xvfj gdb-${GDB_VER}.tar.bz2 || exit 1
+ln -fs gdb-${GDB_VER} gdb || exit 1
+rm -f gdb-${GDB_VER}.tar.bz2
+
+echo
+echo
+echo
+echo binutils, gcc, newlib, and gdb are ready to be built and installed!
+echo

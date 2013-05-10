@@ -1,0 +1,59 @@
+#!/bin/bash
+#
+# 04_newlib
+#
+# Rob Laswick
+# May 2 2013
+#
+# Script to configure, build, and install newlib.
+
+if [ $# -ne 2 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain
+PREFIX=/home/rlaswick/opt/arm-toolchain
+else
+WORKING_DIR=$1
+PREFIX=$2
+fi
+
+PATH=${PREFIX}/bin:$PATH
+
+cd ${PREFIX}/bin
+ln -s arm-none-eabi-gcc arm-none-eabi-cc
+
+cd ${WORKING_DIR}/build/newlib
+
+rm -rf build
+mkdir build
+cd build
+
+../configure \
+    --target=arm-none-eabi \
+    --prefix=${PREFIX} \
+    --enable-interwork \
+    --enable-multilib \
+    --disable-nls \
+    --disable-libssp \
+    --with-gcc \
+    --with-gnu-as \
+    --with-gnu-ld \
+    --with-system-zlib \
+    --disable-shared \
+    --disable-threads \
+    --disable-newlib-suplied-syscalls \
+    --enable-target-optspace \
+    --enable-lto \
+    --disable-libitm || exit 1
+
+make || exit 1
+make install || exit 1
+
+echo
+echo
+echo
+echo newlib built and installed successfully!
+echo

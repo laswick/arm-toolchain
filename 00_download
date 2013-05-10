@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# 00_download
+#
+# Rob Laswick
+# May 2 2013
+#
+# Script to download source files required to build a gcc toolchain.
+
+if [ $# -ne 5 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+BINUTILS_VER=2.23.2
+GCC_VER=4.8.0
+NEWLIB_VER=2.0.0
+GDB_VER=7.4
+else
+WORKING_DIR=$1
+BINUTILS_VER=$2
+GCC_VER=$3
+NEWLIB_VER=$4
+GDB_VER=$5
+fi
+
+cd
+mkdir -p ${WORKING_DIR}
+cd ${WORKING_DIR}
+rm -rf build src
+mkdir build src
+cd src
+wget ftp://ftp.gnu.org/gnu/binutils/binutils-${BINUTILS_VER}.tar.bz2 || exit 1
+wget ftp://ftp.gnu.org/gnu/gcc/gcc-${GCC_VER}/gcc-${GCC_VER}.tar.bz2 || exit 1
+wget ftp://sourceware.org/pub/newlib/newlib-${NEWLIB_VER}.tar.gz || exit 1
+wget ftp://ftp.gnu.org/gnu/gdb/gdb-${GDB_VER}.tar.bz2 || exit 1
+
+cd ../build
+git clone git://git.code.sf.net/p/openocd/code openocd.git || exit 1
+
+echo
+echo
+echo
+echo binutils, gcc, newlib, gdb, and openocd were downloaded successfully!
+echo

@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# 03_gcc_pre
+#
+# Rob Laswick
+# May 2 2013
+#
+# Script to configure, build, and install the bootstrapped version of gcc.
+
+if [ $# -ne 2 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+PREFIX=/home/rlaswick/opt/arm-toolchain
+else
+WORKING_DIR=$1
+PREFIX=$2
+fi
+
+cd ${WORKING_DIR}/build/gcc
+
+./contrib/download_prerequisites
+
+rm -rf build
+mkdir build
+cd build
+
+../configure \
+    --target=arm-none-eabi \
+    --prefix=${PREFIX} \
+    --enable-interwork \
+    --enable-multilib \
+    --disable-nls \
+    --disable-libssp \
+    --with-gcc \
+    --with-gnu-as \
+    --with-gnu-ld \
+    --with-system-zlib \
+    --with-newlib \
+    --enable-languages="c" \
+    --disable-shared \
+    --disable-threads \
+    --disable-newlib-suplied-syscalls \
+    --without-headers \
+    --disable-libmudflap \
+    --disable-libgomp \
+    --disable-libquadmath \
+    --disable-libitm \
+    --enable-lto || exit 1
+
+make all-gcc || exit 1
+make install-gcc || exit 1
+
+echo
+echo
+echo
+echo bootstrapped gcc built and installed successfully!
+echo

@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# 05_gcc_post
+#
+# Rob Laswick
+# May 2 2013
+#
+# Script to configure, build, and install gcc.
+
+if [ $# -ne 2 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+PREFIX=/home/rlaswick/opt/arm-toolchain
+else
+WORKING_DIR=$1
+PREFIX=$2
+fi
+
+PATH=${PREFIX}/bin:$PATH
+
+cd ${PREFIX}
+mkdir -p usr/include
+
+cd ${WORKING_DIR}/build/gcc
+
+rm -rf build
+mkdir build
+cd build
+
+../configure \
+    --target=arm-none-eabi \
+    --prefix=${PREFIX} \
+    --enable-interwork \
+    --enable-multilib \
+    --disable-nls \
+    --disable-libssp \
+    --with-gcc \
+    --with-gnu-as \
+    --with-gnu-ld \
+    --with-system-zlib \
+    --with-newlib \
+    --enable-languages="c" \
+    --disable-shared \
+    --disable-threads \
+    --disable-newlib-suplied-syscalls \
+    --disable-libmudflap \
+    --disable-libgomp \
+    --disable-libquadmath \
+    --with-headers=../../newlib/newlib/libc/include \
+    --with-sysroot=${PREFIX} \
+    --enable-lto \
+    --disable-libitm \
+    --with-pkgversion='laswick.net 2013-05-09' || exit 1
+
+make || exit 1
+make install || exit 1
+
+echo
+echo
+echo
+echo gcc built and installed successfully!
+echo

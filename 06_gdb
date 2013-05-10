@@ -1,0 +1,48 @@
+#!/bin/bash
+#
+# 06_gdb
+#
+# Rob Laswick
+# May 3 2013
+#
+# Script to configure, build, and install gdb.
+
+if [ $# -ne 2 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+PREFIX=/home/rlaswick/opt/arm-toolchain
+else
+WORKING_DIR=$1
+PREFIX=$2
+fi
+
+cd ${WORKING_DIR}/build/gdb
+
+rm -rf build
+mkdir build
+cd build
+
+../configure \
+    --target=arm-none-eabi \
+    --prefix=${PREFIX} \
+    --enable-interwork \
+    --enable-multilib \
+    --disable-nls \
+    --disable-libssp \
+    --with-gcc \
+    --with-gnu-as \
+    --with-gnu-ld \
+    --without-auto-load-safe-path || exit 1
+
+make || exit 1
+make install || exit 1
+
+echo
+echo
+echo
+echo gdb built and installed successfully!
+echo

@@ -1,0 +1,11 @@
+--- /home/rlaswick/opt/openocd/share/openocd/scripts/target/k60.cfg	2013-05-09 10:59:50.506255507 -0400
++++ ./k60.cfg	2013-05-09 12:42:24.058062446 -0400
+@@ -37,3 +37,8 @@
+ # if srst is not fitted use SYSRESETREQ to
+ # perform a soft reset
+ cortex_m reset_config sysresetreq
++
++$_TARGETNAME configure -event gdb-attach {
++    echo "Halting Target"
++    reset init
++}

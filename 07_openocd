@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# 07_openocd
+#
+# Rob Laswick
+# May 9 2013
+#
+# Script to configure, build, install, and patch openocd.
+
+if [ $# -ne 2 ]; then
+echo
+echo
+echo *** RUNNING SCRIPT STAND ALONE ***
+echo
+echo
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
+PREFIX=/home/rlaswick/opt/arm-toolchain
+else
+WORKING_DIR=$1
+PREFIX=$2
+fi
+
+SCRIPTS_DIR=`pwd`
+
+cd ${WORKING_DIR}/build/openocd.git
+
+./bootstrap || exit 1
+
+rm -rf build
+mkdir build
+cd build
+
+../configure \
+    --prefix=${PREFIX}/openocd \
+    --enable-osbdm \
+    --enable-maintainer-mode || exit 1
+
+make || exit 1
+make install || exit 1
+
+patch -b ${PREFIX}/openocd/share/openocd/scripts/target/k60.cfg ${SCRIPTS_DIR}/openocd.patch || exit 1
+
+echo
+echo
+echo
+echo openocd built and installed successfully!
+echo
