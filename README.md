@@ -10,11 +10,21 @@ May 10 2013
 ***
 ## Welcome!
 
-This project simply includes a set of easily customizable scripts to automatically download, configure, patch, build, and install the entire ARM toolchain (including `binutils`, `gcc`, `newlib`, `gdb`, and `openocd`). 
+This project simply includes a set of **easily customizable** scripts that automatically download, configure, patch, build, and install the entire ARM toolchain (including `binutils`, `gcc`, `newlib`, `gdb`, and `openocd`). 
 
 Currently the scripts only support the Cortex M3, Cortex M4, and Cortex M4F.  However, support for other ARM cores can be added relatively easily.
 
-`build_toolchain` is the top level "master" script that calls all the other scripts.  Although, the individual scripts can be run stand alone as well.  If your development host is setup correctly you can simply run `./build_toolchain` and walk away!  A full build takes approximately 2 hours.
+`build_toolchain` is the top level "master" script that calls all the other scripts, although the individual scripts can be run stand alone as well. 
+
+Before running `build_toolchain` there are 2 parameters at the top of the file you'll want to edit:
+
+`WORKING_DIR` is the location where the toolchain will be built.  Once it's built and you're happy with it, this directory can be deleted _(it's actually quite large, ~2.6GB)_.
+
+`PREFIX` is the location where the final toolchain will be installed.
+
+You can also specify the exact version of each of the tools you want your toolchain to use, which is pretty cool.
+
+If your development host is setup correctly you can simply run `./build_toolchain` and walk away!  A full build takes approximately 2 hours.
 
 
 ***
@@ -86,7 +96,7 @@ A `.gdbinit` script could look similar to:
 
 gdb's `load` command programs an image into memory on the target board.
 
-I've found on some **development hosts**, _for whatever reason_, `gdb's load` command is unable to program the FLASH memory on the target.  One way to work around this annoyance is to override the `load` command by adding the following to the end or your `.gdbinit` script:
+I've found on some **development hosts**, _for whatever reason_, gdb's `load` command is unable to program the FLASH memory on the target.  One way to work around this annoyance is to override the `load` command by adding the following to the end or your `.gdbinit` script:
 
         define load
         monitor flash write_image erase "out.axf" 0 elf
