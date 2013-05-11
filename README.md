@@ -50,7 +50,7 @@ There are Makefiles provided for all the projects on [laswick.net](http://www.la
 
 - I typically reserve the file `makefile` _(note the lowercase 'm')_ to be used as a  `symlink` to the specific Makefile being used (i.e. flashLed.mak).  Since `make` searches for `makefile` and then `Makefile` _(in that order)_, your `symlinked` Makefile will be used.  This allows you to simply run `make` to build your project, rather than having to type out `make -f flashLed.mak` everytime.
 
-- Ensure you pass the **`-nostartfiles`** flag when linking to prevent the tools from trying to include generic `start code` which you don't want.
+- Ensure you pass the `-nostartfiles` flag when linking to prevent the tools from trying to include generic `start code` which you don't want.
 
 - **Do not** link the core libraries (`libgcc` and `libc`) explicitly.  Link using `gcc` instead of `ld` to let `gcc` determine which _version_ of each library to pull in _(you'll need to pass in your `CPU_FLAGS` (i.e. -mcpu=cortex-m4 -mthumb, etc) to `gcc` when linking for this to work correctly)_.
 
@@ -86,7 +86,7 @@ A `.gdbinit` script could look similar to:
 
 gdb's `load` command programs an image into memory on the target board.
 
-I've found on some development hosts, _for whatever reason_, running `gdb's load` command is unable to program the FLASH memory on the target.  One way to work around this annoyance is to override and redefine the `load` command by adding the following to the end or your `.gdbinit` script:
+I've found on some **development hosts**, _for whatever reason_, `gdb's load` command is unable to program the FLASH memory on the target.  One way to work around this annoyance is to override the `load` command by adding the following to the end or your `.gdbinit` script:
 
         define load
         monitor flash write_image erase "out.axf" 0 elf
