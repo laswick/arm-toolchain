@@ -96,7 +96,7 @@ A `.gdbinit` script could look similar to:
 
 gdb's `load` command programs an image into memory on the target board.
 
-I've found on some **development hosts**, _for whatever reason_, gdb's `load` command is unable to program the FLASH memory on the target.  One way to work around this annoyance is to override the `load` command by adding the following to the end or your `.gdbinit` script:
+In some cases when using `gdb` with `openocd`, gdb's `load` command is unable to program the FLASH memory on the target.  One way to work around this annoyance is to override the `load` command by adding the following to the end of your `.gdbinit` script:
 
         define load
         monitor flash write_image erase "out.axf" 0 elf
