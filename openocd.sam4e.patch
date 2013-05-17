@@ -1,0 +1,42 @@
+--- at91sam4.c.orig	2013-05-11 14:52:00.616397044 -0400
++++ at91sam4.c	2013-05-13 21:30:08.530226157 -0400
+@@ -261,6 +261,39 @@
+ /* these are used to *initialize* the "pChip->details" structure. */
+ static const struct sam4_chip_details all_sam4_details[] = {
+ 	/* Start at91sam4s* series */
++	/* atsam4e16e - LQFP144/LFBGA144 */
++	{
++		.chipid_cidr    = 0xa3cc0ce0,
++		.name           = "at91sam4e16e",
++		.total_flash_size     = 1024 * 1024,
++		.total_sram_size      = 128 * 1024,
++		.n_gpnvms       = 2,
++		.n_banks        = 1,
++		{
++/*		.bank[0] = {*/
++		  {
++			.probed = 0,
++			.pChip  = NULL,
++			.pBank  = NULL,
++			.bank_number = 0,
++			.base_address = FLASH_BANK_BASE_S,
++			.controller_address = 0x400e0a00,
++			.flash_wait_states = 6,	/* workaround silicon bug */
++			.present = 1,
++			.size_bytes =  1024 * 1024,
++			.nsectors   =  128,
++			.sector_size = 8192,
++			.page_size   = 512,
++		  },
++/*		.bank[1] = {*/
++		  {
++			.present = 0,
++			.probed = 0,
++			.bank_number = 1,
++
++		  },
++		},
++	},
+ 	/*atsam4s16c - LQFP100/BGA100*/
+ 	{
+ 		.chipid_cidr    = 0x28AC0CE0,

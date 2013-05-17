@@ -7,7 +7,7 @@
 #
 # Script to configure, build, and install gcc.
 
-if [ $# -ne 2 ]; then
+if [ $# -ne 3 ]; then
 echo
 echo
 echo *** RUNNING SCRIPT STAND ALONE ***
@@ -15,9 +15,11 @@ echo
 echo
 WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
 PREFIX=/home/rlaswick/opt/arm-toolchain
+NUM_CORES=1
 else
 WORKING_DIR=$1
 PREFIX=$2
+NUM_CORES=$3
 fi
 
 PATH=${PREFIX}/bin:$PATH
@@ -54,9 +56,9 @@ cd build
     --with-sysroot=${PREFIX} \
     --enable-lto \
     --disable-libitm \
-    --with-pkgversion='laswick.net 2013-05-09' || exit 1
+    --with-pkgversion="laswick.net `date +"%04Y-%m-%d"`" || exit 1
 
-make || exit 1
+make -j${NUM_CORES} || exit 1
 make install || exit 1
 
 echo
