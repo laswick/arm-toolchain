@@ -7,9 +7,9 @@
 #
 # Top level "master" build script to build and install a gcc toolchain.
 
-WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build-test
+WORKING_DIR=/home/rlaswick/engineering/arm-toolchain-build
 
-PREFIX=/home/rlaswick/opt/arm-toolchain-test
+PREFIX=/home/rlaswick/opt/arm-toolchain
 
 BINUTILS_VER=2.23.2
 GCC_VER=4.8.0
