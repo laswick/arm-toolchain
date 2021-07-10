@@ -6,8 +6,14 @@ Rob Laswick
 May 10 2013  
 [www.laswick.net](http://www.laswick.net)
 
+---
 
-***
+> **Project Status: Inactive**
+
+> This repository will remain available but is no longer maintained.
+
+---
+
 ## Welcome!
 
 This project simply includes a set of **easily customizable** scripts that automatically download, configure, patch, build, and install the entire ARM toolchain (including `binutils`, `gcc`, `newlib`, `gdb`, and `openocd`). 
